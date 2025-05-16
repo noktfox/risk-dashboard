@@ -1,0 +1,6 @@
+__pycache__
+data/cache/
+.venv/
+
+# PyCharm IDE files
+.idea/

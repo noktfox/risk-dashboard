@@ -4,3 +4,6 @@ data/cache/
 
 # PyCharm IDE files
 .idea/
+
+# Config files
+.env

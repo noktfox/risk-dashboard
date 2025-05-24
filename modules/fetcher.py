@@ -23,6 +23,7 @@ class DataFetcher:
             return pd.read_csv(cache_file, index_col=0, parse_dates=True)
 
         df = yf.Ticker(ticker).history(period=period, interval=interval)
+        df.index = pd.to_datetime(df.index).tz_localize(None)
         df.to_csv(cache_file)
         return df
 

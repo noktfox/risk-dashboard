@@ -36,8 +36,9 @@ class FeatureEngineer:
         """
         Beta relative to a benchmark (e.g. market index).
         """
-        covariance = returns.cov(benchmark_returns)
-        variance = benchmark_returns.var(ddof=0)
+        aligned_ret, aligned_bench = returns.align(benchmark_returns, join='inner')
+        covariance = aligned_ret.cov(aligned_bench)
+        variance = aligned_bench.var(ddof=0)
         return covariance / variance if variance != 0 else np.nan
 
     def build_features(self, price_df: pd.DataFrame, benchmark_df: pd.DataFrame) -> pd.Series:

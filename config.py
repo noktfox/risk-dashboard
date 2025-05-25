@@ -21,5 +21,5 @@ MODEL_DIR      = BASE_DIR / "models"
 MODEL_FILENAME = os.getenv("MODEL_FILENAME", "risk_dashboard_kmeans.joblib")
 
 # OTHER CONSTANTS
-DEFAULT_N_RECOMMENDED = int(os.getenv("DEFAULT_N_RECOMMENDED", 4))
+DEFAULT_N_RECOMMEND = int(os.getenv("DEFAULT_N_RECOMMEND", 4))
 LOG_LEVEL             = os.getenv("LOG_LEVEL", "INFO")

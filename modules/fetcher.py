@@ -2,6 +2,8 @@ import pandas as pd
 import yfinance as yf
 
 from config import CACHE_DATA_DIR
+from modules.utils import ensure_dir, is_outdated
+
 
 class DataFetcher:
     """
@@ -10,7 +12,7 @@ class DataFetcher:
 
     def __init__(self):
         # Check that data directories exist
-        CACHE_DATA_DIR.mkdir(parents=True, exist_ok=True)
+        ensure_dir(CACHE_DATA_DIR)
 
     def fetch_price(self, ticker: str, period: str = "1y", interval: str = "1d") -> pd.DataFrame:
         """
@@ -18,7 +20,7 @@ class DataFetcher:
         Check cache first, if missing, fetch from yfinance and cache as CSV.
         """
         cache_file = CACHE_DATA_DIR / f"{ticker}_{period}_{interval}.csv"
-        if cache_file.exists():
+        if cache_file.exists() and not is_outdated(cache_file):
             return pd.read_csv(cache_file, index_col=0, parse_dates=True)
 
         df = yf.Ticker(ticker).history(period=period, interval=interval)

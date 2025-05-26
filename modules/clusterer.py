@@ -1,6 +1,7 @@
 import joblib
 from sklearn.cluster import KMeans
 from config import MODEL_DIR, MODEL_FILENAME
+from modules.utils import ensure_dir, load_from_cache, is_outdated, cache_to_file
 
 class Clusterer:
     """
@@ -11,7 +12,7 @@ class Clusterer:
         self.sector = sector.replace(" ", "_")
 
         self.file_name = f"{self.sector}_cluster_model.joblib"
-        MODEL_DIR.mkdir(parents=True, exist_ok=True)
+        ensure_dir(MODEL_DIR)
 
         self.model = None
 
@@ -31,7 +32,7 @@ class Clusterer:
         Load the clustering model from disk if not already loaded.
         """
         if self.model is None:
-            self.model = joblib.load(MODEL_DIR / MODEL_FILENAME)
+            self.model = load_from_cache(MODEL_DIR / MODEL_FILENAME)
         return self.model
 
     def predict(self, feature_matrix):

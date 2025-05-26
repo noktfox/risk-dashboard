@@ -18,7 +18,7 @@ CACHE_DATA_DIR = BASE_DIR / "data" / "cache"
 
 # MODEL & CLUSTERING
 MODEL_DIR      = BASE_DIR / "models"
-MODEL_FILENAME = os.getenv("MODEL_FILENAME", "risk_dashboard_kmeans.joblib")
+MODEL_FILENAME = "risk_dashboard_kmeans.joblib"
 # LOGGING
 LOG_LEVEL    = "INFO"
 LOG_FILENAME = "app.log"
@@ -28,5 +28,4 @@ LOG_DIR      = BASE_DIR / "logs"
 MARKET_CLOSE = time(hour=20, minute=30)
 MARKET_TZ = "America/New_York"
 # OTHER CONSTANTS
-DEFAULT_N_RECOMMEND = int(os.getenv("DEFAULT_N_RECOMMEND", 4))
-LOG_LEVEL             = os.getenv("LOG_LEVEL", "INFO")
+DEFAULT_N_RECOMMEND = 4

@@ -1,7 +1,9 @@
 import joblib
 from sklearn.cluster import KMeans
+
 from config import MODEL_DIR, MODEL_FILENAME
 from modules.utils import ensure_dir, load_from_cache, is_outdated, cache_to_file
+
 
 class Clusterer:
     """

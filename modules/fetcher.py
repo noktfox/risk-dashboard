@@ -1,7 +1,7 @@
 import pandas as pd
 import yfinance as yf
 
-from config import RAW_DATA_DIR, CACHE_DATA_DIR
+from config import CACHE_DATA_DIR
 
 class DataFetcher:
     """
@@ -10,7 +10,6 @@ class DataFetcher:
 
     def __init__(self):
         # Check that data directories exist
-        RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
         CACHE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     def fetch_price(self, ticker: str, period: str = "1y", interval: str = "1d") -> pd.DataFrame:

@@ -1,6 +1,7 @@
 __pycache__
 data/cache/
 .venv/
+logs/
 
 # PyCharm IDE files
 .idea/

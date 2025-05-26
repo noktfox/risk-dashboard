@@ -18,6 +18,10 @@ CACHE_DATA_DIR = BASE_DIR / "data" / "cache"
 # MODEL & CLUSTERING
 MODEL_DIR      = BASE_DIR / "models"
 MODEL_FILENAME = os.getenv("MODEL_FILENAME", "risk_dashboard_kmeans.joblib")
+# LOGGING
+LOG_LEVEL    = "INFO"
+LOG_FILENAME = "app.log"
+LOG_DIR      = BASE_DIR / "logs"
 
 # OTHER CONSTANTS
 DEFAULT_N_RECOMMEND = int(os.getenv("DEFAULT_N_RECOMMEND", 4))

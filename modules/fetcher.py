@@ -20,7 +20,7 @@ class DataFetcher:
         Check cache first, if missing, fetch from yfinance and cache as CSV.
         """
         cache_file = CACHE_DATA_DIR / f"{ticker}_{period}_{interval}.csv"
-        if cache_file.exists() and not is_outdated(cache_file):
+        if cache_file.exists():
             return pd.read_csv(cache_file, index_col=0, parse_dates=True)
 
         df = yf.Ticker(ticker).history(period=period, interval=interval)

@@ -20,11 +20,14 @@ class Clusterer:
         """
         Fit a KMeans clustering model to the feature matrix and save it.
         """
-        inertias = self.calculate_inertias(feature_matrix)
-        n_clusters = self.find_elbow(inertias)
-        self.model = KMeans(n_clusters=n_clusters, random_state=42) # Uses lloyd algorithm by default
-        self.model.fit(feature_matrix)
-        joblib.dump(self.model, MODEL_DIR / self.file_name)
+
+        # Check that there is no existing model and model is not outdated
+        if not self.model and is_outdated(MODEL_DIR / MODEL_FILENAME):
+            inertias = self.calculate_inertias(feature_matrix)
+            n_clusters = self.find_elbow(inertias)
+            self.model = KMeans(n_clusters=n_clusters, random_state=42) # Uses lloyd algorithm by default
+            self.model.fit(feature_matrix)
+            cache_to_file(self.model, MODEL_DIR / self.file_name)
         return self.model
 
     def load_model(self):

@@ -1,4 +1,5 @@
 import os
+from datetime import time
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -23,6 +24,9 @@ LOG_LEVEL    = "INFO"
 LOG_FILENAME = "app.log"
 LOG_DIR      = BASE_DIR / "logs"
 
+# MARKET TRADING
+MARKET_CLOSE = time(hour=20, minute=30)
+MARKET_TZ = "America/New_York"
 # OTHER CONSTANTS
 DEFAULT_N_RECOMMEND = int(os.getenv("DEFAULT_N_RECOMMEND", 4))
 LOG_LEVEL             = os.getenv("LOG_LEVEL", "INFO")

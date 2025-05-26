@@ -1,4 +1,6 @@
 import logging
+from datetime import datetime, timedelta, time
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import Any
 import joblib
@@ -32,3 +34,28 @@ def load_from_cache(path: Path) -> Any:
         return joblib.load(path)
     return None
 
+
+def get_last_modified(path: Path) -> datetime:
+    return datetime.fromtimestamp(path.stat().st_mtime)
+
+
+def is_outdated(path: Path, market_close: time = MARKET_CLOSE) -> bool:
+    if not path.exists():
+        return True
+    last_modified = datetime.fromtimestamp(path.stat().st_mtime)
+    now = datetime.now(ZoneInfo(MARKET_TZ))
+    wd = now.weekday()
+    if wd == 0:
+        # Change from Sun to Fri
+        last_trading = now.date() - timedelta(days=2)
+    elif wd == 6:
+        # Change from Mon to Fri
+        last_trading = now.date() - timedelta(days=3)
+    elif wd == 5:
+        # Change from Sat to Fri
+        last_trading = now.date() - timedelta(days=1)
+    else:
+        last_trading = now.date() - timedelta(days=1)
+
+    reference_date = datetime.combine(last_trading, market_close)
+    return last_modified < reference_date

@@ -1,7 +1,7 @@
 import pandas as pd
 import yfinance as yf
 
-from config import RAW_DATA_DIR, CACHE_DATA_DIR
+from config import RAW_DATA_DIR, CACHE_DATA_DIR, TICKERS_FILENAME
 from modules.utils import ensure_dir, is_outdated
 
 
@@ -33,5 +33,29 @@ class DataFetcher:
         """
         Fetch sector metadata for a ticker.
         """
-        info = yf.Ticker(ticker).info
-        return info.get("sector")
+        csv_path = RAW_DATA_DIR / TICKERS_FILENAME
+        df = pd.read_csv(csv_path).set_index("ticker")
+        return df.at[ticker, "sector"]
+
+
+    def fetch_sector_tickers(self, sector: str) -> list:
+        """
+        Fetch all tickers in a given sector.
+        """
+        df = pd.read_csv(RAW_DATA_DIR / TICKERS_FILENAME)
+        return df[df["sector"] == sector]["ticker"].tolist()
+
+    def fetch_tickers(self):
+        """
+        Fetch all tickers in the S&P 500
+        """
+        csv_path = RAW_DATA_DIR / TICKERS_FILENAME
+        if not csv_path.exists():
+            url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+            tables = pd.read_html(url, header=0)
+            sp500 = tables[0]
+            ticker_df = pd.DataFrame({
+                "ticker": sp500["Symbol"].str.replace(".", "-", regex=False), # convert to yahoo finance formatting
+                "sector": sp500["GICS Sector"]
+            })
+            ticker_df.to_csv(csv_path, index=False)

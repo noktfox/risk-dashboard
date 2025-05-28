@@ -16,6 +16,7 @@ API_TIMEOUT  = int(os.getenv("API_TIMEOUT", 10))
 BASE_DIR       = Path(__file__).parent
 RAW_DATA_DIR   = BASE_DIR / "data" / "raw"
 CACHE_DATA_DIR = BASE_DIR / "data" / "cache"
+TICKERS_FILENAME = "tickers.csv"
 
 # MODEL & CLUSTERING
 MODEL_DIR      = BASE_DIR / "models"

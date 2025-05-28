@@ -1,7 +1,7 @@
 import pandas as pd
 import yfinance as yf
 
-from config import CACHE_DATA_DIR
+from config import RAW_DATA_DIR, CACHE_DATA_DIR
 from modules.utils import ensure_dir, is_outdated
 
 
@@ -13,6 +13,7 @@ class DataFetcher:
     def __init__(self):
         # Check that data directories exist
         ensure_dir(CACHE_DATA_DIR)
+        ensure_dir(RAW_DATA_DIR)
 
     def fetch_price(self, ticker: str, period: str = "1y", interval: str = "1d") -> pd.DataFrame:
         """

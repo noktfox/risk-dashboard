@@ -16,7 +16,6 @@ from modules.utils import configure_logging
 
 def main():
     print("Risk Comparer: find similar-risk peers for a ticker within the same sector")
-    ticker = input("Ticker symbol to analyze (e.g. AAPL): ")
 
     configure_logging()
 
@@ -30,6 +29,20 @@ def main():
         logger.error("Data fetch error: %s", e)
         print(f"Sorry, we couldn't fetch market tickers at this time.")
         sys.exit(1)
+
+    # Get input ticker
+    while True:
+        ticker = input("Ticker symbol to analyze (e.g. AAPL): ")
+        # Format ticker to yfinance standards
+        ticker = ticker.upper()
+        ticker = ticker.replace(".", "-")
+        # Validate input ticker
+        try:
+            fetcher.validate_ticker(ticker)
+            break
+        except KeyError as e:
+            logger.error("Invalid ticker: %s", e)
+            print("We don't have information on that ticker.")
 
     sector: str = fetcher.fetch_sector(ticker)
     sector_tickers: list = fetcher.fetch_sector_tickers(sector)

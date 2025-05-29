@@ -74,3 +74,17 @@ class DataFetcher:
                 raise KeyError(f"Incorrect table parsed from {url} (HTML layout changed)")
 
             tickers_df.to_csv(csv_path, index=False)
+
+    def validate_ticker(self, ticker: str):
+        csv_path = RAW_DATA_DIR / TICKERS_FILENAME
+
+        # Check that ticker exists in scraped list of tickers
+        tickers = pd.read_csv(csv_path)
+        if ticker not in tickers["ticker"].values:
+            raise KeyError(f"Ticker '{ticker}' does not exist in '{TICKERS_FILENAME}'.")
+
+        # Check that ticker exists in yfinance database
+        yf_ticker = yf.Ticker(ticker)
+        info = yf_ticker.info
+        if not info or "shortName" not in info:
+            raise KeyError("Ticker does not exist in yfinance database.")

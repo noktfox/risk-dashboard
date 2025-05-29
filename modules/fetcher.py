@@ -2,6 +2,9 @@ import pandas as pd
 import yfinance as yf
 
 from config import RAW_DATA_DIR, CACHE_DATA_DIR, TICKERS_FILENAME
+import requests
+import urllib.error
+
 from modules.utils import ensure_dir, is_outdated
 
 
@@ -52,10 +55,22 @@ class DataFetcher:
         csv_path = RAW_DATA_DIR / TICKERS_FILENAME
         if not csv_path.exists():
             url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-            tables = pd.read_html(url, header=0)
+            try:
+                tables = pd.read_html(url, header=0)
+            except requests.exceptions.RequestException:
+                raise RuntimeError(f"Network error fetching tickers from {url}")
+            except urllib.error.URLError:
+                raise RuntimeError(f"Network error fetching tickers from {url}")
+            except ValueError:
+                raise ValueError(f"No tables parsed from {url} (HTML layout changed)")
+
             sp500 = tables[0]
-            ticker_df = pd.DataFrame({
-                "ticker": sp500["Symbol"].str.replace(".", "-", regex=False), # convert to yahoo finance formatting
-                "sector": sp500["GICS Sector"]
-            })
-            ticker_df.to_csv(csv_path, index=False)
+            try:
+                tickers_df = pd.DataFrame({
+                    "ticker": sp500["Symbol"].str.replace(".", "-", regex=False), # convert to yahoo finance formatting
+                    "sector": sp500["GICS Sector"]
+                })
+            except KeyError:
+                raise KeyError(f"Incorrect table parsed from {url} (HTML layout changed)")
+
+            tickers_df.to_csv(csv_path, index=False)

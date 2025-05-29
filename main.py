@@ -1,6 +1,10 @@
 import pandas as pd
 import yfinance as yf
 
+import sys
+import logging
+logger = logging.getLogger(__name__)
+
 from config import BENCHMARK_TICKER
 
 from modules.clusterer import Clusterer
@@ -19,7 +23,14 @@ def main():
     fetcher = DataFetcher()
     feat_eng = FeatureEngineer()
 
-    fetcher.fetch_tickers()
+    # Get all stock tickers on the market
+    try:
+        fetcher.fetch_tickers()
+    except Exception as e:
+        logger.error("Data fetch error: %s", e)
+        print(f"Sorry, we couldn't fetch market tickers at this time.")
+        sys.exit(1)
+
     sector: str = fetcher.fetch_sector(ticker)
     sector_tickers: list = fetcher.fetch_sector_tickers(sector)
 

@@ -31,6 +31,7 @@ LOG_DIR      = BASE_DIR / "logs"
 MARKET_CLOSE = time(hour=20, minute=30)
 MARKET_TZ = "America/New_York"
 BENCHMARK_TICKER = "SPY"
+TICKERS_URL =  "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
 # OTHER CONSTANTS
 DEFAULT_N_RECOMMEND = 4

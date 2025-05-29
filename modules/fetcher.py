@@ -1,10 +1,10 @@
 import pandas as pd
 import yfinance as yf
 
-from config import RAW_DATA_DIR, CACHE_DATA_DIR, TICKERS_FILENAME
 import requests
 import urllib.error
 
+from config import RAW_DATA_DIR, CACHE_DATA_DIR, TICKERS_FILENAME, TICKERS_URL
 from modules.utils import ensure_dir, is_outdated
 
 
@@ -54,7 +54,7 @@ class DataFetcher:
         """
         csv_path = RAW_DATA_DIR / TICKERS_FILENAME
         if not csv_path.exists():
-            url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+            url = TICKERS_URL
             try:
                 tables = pd.read_html(url, header=0)
             except requests.exceptions.RequestException:

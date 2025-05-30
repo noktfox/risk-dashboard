@@ -58,7 +58,7 @@ def main():
 
     clusterer = Clusterer(sector)
     clusterer.fit(feature_matrix)
-    cluster_labels = pd.Series(clusterer.predict(feature_matrix), index=sector_tickers)
+    cluster_labels = clusterer.predict(feature_matrix)
 
     # Get similar-risk stock tickers
     risk_grouper = RiskGrouper()

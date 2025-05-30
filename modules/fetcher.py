@@ -4,7 +4,7 @@ import yfinance as yf
 import requests
 import urllib.error
 
-from config import RAW_DATA_DIR, CACHE_DATA_DIR, TICKERS_FILENAME, TICKERS_URL
+from config import RAW_DATA_DIR, CACHE_DATA_DIR, TICKERS_FILENAME, TICKERS_URL, PRICE_DATA_PERIOD, PRICE_DATA_INTERVAL
 from modules.utils import ensure_dir, is_outdated
 
 
@@ -18,7 +18,11 @@ class DataFetcher:
         ensure_dir(CACHE_DATA_DIR)
         ensure_dir(RAW_DATA_DIR)
 
-    def fetch_price(self, ticker: str, period: str = "1y", interval: str = "1d") -> pd.DataFrame:
+    def fetch_price(
+            self, ticker: str,
+            period: str = PRICE_DATA_PERIOD,
+            interval: str = PRICE_DATA_INTERVAL
+    ) -> pd.DataFrame:
         """
         Fetch historical price data for a ticker.
         Check cache first, if missing, fetch from yfinance and cache as CSV.

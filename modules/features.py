@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 
+from config import TRADING_DAYS
 class FeatureEngineer:
     """
     Computes risk metrics and features for clustering.
     """
 
-    def __init__(self, trading_days: int = 252):
+    def __init__(self, trading_days: int=TRADING_DAYS):
         self.trading_days = trading_days
 
     def calculate_log_returns(self, price_df: pd.DataFrame) -> pd.Series:

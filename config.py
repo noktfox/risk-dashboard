@@ -34,4 +34,4 @@ BENCHMARK_TICKER = "SPY"
 TICKERS_URL =  "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
 # OTHER CONSTANTS
-DEFAULT_N_RECOMMEND = 4
+DEFAULT_N_PEERS = 4

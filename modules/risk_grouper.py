@@ -1,16 +1,16 @@
 import numpy as np
 import pandas as pd
-from config import DEFAULT_N_RECOMMEND
+from config import DEFAULT_N_PEERS
 
-class Recommender:
+class RiskGrouper:
     """
-    Recommends similar-risk tickers within the same cluster.
+    Group similar-risk tickers within the same cluster of a sector space.
     """
 
-    def __init__(self, n_recommend=DEFAULT_N_RECOMMEND):
-        self.n_recommend = n_recommend
+    def __init__(self, n_peers=DEFAULT_N_PEERS):
+        self.n_peers = n_peers
 
-    def recommend(self,
+    def group(self,
                   ticker: str,
                   feature_matrix: pd.DataFrame,
                   cluster_labels: pd.Series) -> list[str]:
@@ -30,4 +30,4 @@ class Recommender:
         distances = np.linalg.norm(vectors - ticker_vector, axis=1)
         order = np.argsort(distances)
         sorted_neighbors = [neighbor_tickers[i] for i in order]
-        return sorted_neighbors[:self.n_recommend]
+        return sorted_neighbors[:self.n_peers]

@@ -10,7 +10,7 @@ from config import BENCHMARK_TICKER
 from modules.clusterer import Clusterer
 from modules.features import FeatureEngineer
 from modules.fetcher import DataFetcher
-from modules.recommender import Recommender
+from modules.risk_grouper import RiskGrouper
 from modules.utils import configure_logging
 
 
@@ -60,9 +60,9 @@ def main():
     clusterer.fit(feature_matrix)
     cluster_labels = pd.Series(clusterer.predict(feature_matrix), index=sector_tickers)
 
-    # Get recommended stock tickers
-    recommender = Recommender()
-    peer_tickers = recommender.recommend(ticker, feature_matrix, cluster_labels)
+    # Get similar-risk stock tickers
+    risk_grouper = RiskGrouper()
+    peer_tickers = risk_grouper.group(ticker, feature_matrix, cluster_labels)
 
     # Output results
     print(f"Sector: {sector}")
@@ -71,7 +71,7 @@ def main():
     print(feat_eng.build_features(input_ticker_prices, benchmark_prices).to_string())
 
 
-    print("\nRisk analysis for recommended tickers:\n")
+    print("\nRisk analysis for similar-risk tickers:\n")
     for t in peer_tickers:
         ticker_obj = yf.Ticker(t)
         company_name = ticker_obj.info['longName']

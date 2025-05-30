@@ -63,6 +63,10 @@ def main():
     # Get similar-risk stock tickers
     risk_grouper = RiskGrouper()
     peer_tickers = risk_grouper.group(ticker, feature_matrix, cluster_labels)
+    # Quit program if no other peer tickers exist is the same risk cluster
+    if len(peer_tickers) == 0:
+        print("There are no similar-risk peers for this ticker based on our cluster model. Must be unique!")
+        sys.exit(1)
 
     # Output results
     print(f"Sector: {sector}")

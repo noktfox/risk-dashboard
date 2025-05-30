@@ -24,7 +24,7 @@ def main():
 
     # Get all stock tickers on the market
     try:
-        fetcher.fetch_tickers()
+        fetcher.load_tickers()
     except Exception as e:
         logger.error("Data fetch error: %s", e)
         print(f"Sorry, we couldn't fetch market tickers at this time.")
@@ -48,10 +48,10 @@ def main():
     sector_tickers: list = fetcher.fetch_sector_tickers(sector)
 
     # Build feature matrix of all tickers in the same sector
-    benchmark_prices = fetcher.fetch_price(BENCHMARK_TICKER)
+    benchmark_prices = fetcher.fetch_ticker_history(BENCHMARK_TICKER)
     features: list = []
     for t in sector_tickers:
-        ticker_prices = fetcher.fetch_price(t)
+        ticker_prices = fetcher.fetch_ticker_history(t)
         feature_vect = feat_eng.build_features(benchmark_prices, ticker_prices)
         features.append(feature_vect)
     feature_matrix: pd.DataFrame = pd.DataFrame(features, index=sector_tickers)
@@ -67,7 +67,7 @@ def main():
     # Output results
     print(f"Sector: {sector}")
     print(f"Risk analysis for {ticker}:")
-    input_ticker_prices = fetcher.fetch_price(ticker)
+    input_ticker_prices = fetcher.fetch_ticker_history(ticker)
     print(feat_eng.build_features(input_ticker_prices, benchmark_prices).to_string())
 
 

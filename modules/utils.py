@@ -13,7 +13,7 @@ def ensure_dir(path: Path) -> None:
 
 def configure_logging(log_level: str = LOG_LEVEL, log_file: Path = LOG_DIR / LOG_FILENAME) -> None:
     level = getattr(logging, log_level.upper())
-    handlers = [logging.StreamHandler()]
+    handlers = []
     if log_file:
         ensure_dir(log_file.parent)
         handlers.append(logging.FileHandler(log_file, mode="a"))

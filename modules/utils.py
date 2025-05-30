@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import Any
 import joblib
+
 from config import LOG_LEVEL, LOG_FILENAME, LOG_DIR, MARKET_TZ, MARKET_CLOSE
 
 
@@ -40,22 +41,28 @@ def get_last_modified(path: Path) -> datetime:
 
 
 def is_outdated(path: Path, market_close: time = MARKET_CLOSE) -> bool:
+    """Check if a path is outdated based on daily market data. Used to refresh cached files by daily basis."""
+
+    # Return true if the path does not exist
     if not path.exists():
         return True
+
+    # Check if last data refresh is earlier than last trading day close
     last_modified = datetime.fromtimestamp(path.stat().st_mtime)
     now = datetime.now(ZoneInfo(MARKET_TZ))
-    wd = now.weekday()
-    if wd == 0:
+    # Determine last trading (business) day based current week day
+    day_of_wk: int = now.weekday()
+    if day_of_wk == 0:
         # Change from Sun to Fri
-        last_trading = now.date() - timedelta(days=2)
-    elif wd == 6:
+        last_trading_day = now.date() - timedelta(days=2)
+    elif day_of_wk == 6:
         # Change from Mon to Fri
-        last_trading = now.date() - timedelta(days=3)
-    elif wd == 5:
+        last_trading_day = now.date() - timedelta(days=3)
+    elif day_of_wk == 5:
         # Change from Sat to Fri
-        last_trading = now.date() - timedelta(days=1)
+        last_trading_day = now.date() - timedelta(days=1)
     else:
-        last_trading = now.date() - timedelta(days=1)
-
-    reference_date = datetime.combine(last_trading, market_close)
+        last_trading_day = now.date() - timedelta(days=1)
+    # Combine last trading day with market close time
+    reference_date = datetime.combine(last_trading_day, market_close)
     return last_modified < reference_date

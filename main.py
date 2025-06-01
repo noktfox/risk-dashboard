@@ -80,7 +80,7 @@ def main():
         ticker_obj = yf.Ticker(t)
         company_name = ticker_obj.info['longName']
         print(f"{t}: {company_name}")
-        print(feature_matrix[feature_matrix.index == t].squeeze().to_string())
+        print(feature_matrix.loc[t].squeeze().to_string())
         print("\n")
 
 

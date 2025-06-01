@@ -25,6 +25,11 @@ def configure_logging(log_level: str = LOG_LEVEL, log_file: Path = LOG_DIR / LOG
     )
 
 
+def clear_logs() -> None:
+    with open(LOG_DIR / LOG_FILENAME, 'w'):
+        pass
+
+
 def cache_to_file(obj: Any, path: Path) -> None:
     ensure_dir(path.parent)
     joblib.dump(obj, path)

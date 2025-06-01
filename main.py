@@ -11,12 +11,13 @@ from modules.clusterer import Clusterer
 from modules.features import FeatureEngineer
 from modules.fetcher import DataFetcher
 from modules.risk_grouper import RiskGrouper
-from modules.utils import configure_logging
+from modules.utils import configure_logging, clear_logs
 
 
 def main():
     print("Risk Comparer: find similar-risk peers for a ticker within the same sector")
 
+    clear_logs()
     configure_logging()
 
     fetcher = DataFetcher()

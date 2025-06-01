@@ -52,7 +52,7 @@ def main():
     features: list = []
     for t in sector_tickers:
         ticker_prices = fetcher.fetch_ticker_history(t)
-        feature_vect = feat_eng.build_features(benchmark_prices, ticker_prices)
+        feature_vect = feat_eng.build_features(ticker_prices, benchmark_prices)
         features.append(feature_vect)
     feature_matrix: pd.DataFrame = pd.DataFrame(features, index=sector_tickers)
 
